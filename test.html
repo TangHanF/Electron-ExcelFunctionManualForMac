@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Excel函数帮助手册</title>
+    <link rel="stylesheet" href="./css/iview.css">
+
+    <script src="./js/jquery-3.3.1.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/iview.min.js"></script>
+    <style>
+        .demo-split{
+            height: 200px;
+            border: 1px solid #dcdee2;
+        }
+        .demo-split-pane{
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Excel函数帮助手册</h1>
+<div id="app">
+
+    <Dropdown>
+        <i-button type="primary">
+            访问项目/库
+            <Icon type="ios-arrow-down"></Icon>
+        </i-button>
+        <dropdown-menu slot="list">
+            <dropdown-item>驴打滚</dropdown-item>
+            <dropdown-item>炸酱面</dropdown-item>
+        </dropdown-menu>
+    </Dropdown>
+
+
+    <Tabs value="name1">
+        <tab-pane label="标签一" name="name1">标签一的内容</tab-pane>
+        <tab-pane label="标签二" name="name2">标签二的内容</tab-pane>
+        <tab-pane label="标签三" name="name3">标签三的内容</tab-pane>
+    </Tabs>
+
+
+
+    <div class="demo-split">
+        <Split v-model="split1">
+            <div slot="left" class="demo-split-pane">
+                Left Pane
+            </div>
+            <div slot="right" class="demo-split-pane">
+                Right Pane
+            </div>
+        </Split>
+    </div>
+
+
+</div>
+
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            keyword: '',
+            split1: 0.5
+        },
+        methods: {
+            clearSearch: function () {
+
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

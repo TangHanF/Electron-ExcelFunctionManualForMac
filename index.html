@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Excel函数帮助手册</title>
+    <!-- import stylesheet -->
+    <link rel="stylesheet" href="./css/iview.css">
+    <link rel="stylesheet" href="./css/common_component_style.css">
+`
+    <script src="./js/jquery-3.3.1.js"></script>
+    <script>if (typeof module === 'object') {window.jQuery = window.$ = module.exports;};</script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/iview.min.js"></script>
+    <script src="./js/nav_json.js"></script>
+    <script src="./js/search_json.js"></script>
+    <script src="./js/component/common_components.js"></script>
+    <script src="./renderer.js"></script>
+
+
+</head>
+<body>
+
+<div id="app">
+    <div style="margin: 10px 0px 10px 0px">
+        <h2>Excel函数帮助手册</h2>
+    </div>
+    <div class="input-search">
+        <i-input v-model="keyword" placeholder="全局搜索..." style="width: 300px"></i-input>
+        <i-button type="primary" @click="clearSearch">清空搜索</i-button>
+    </div>
+
+
+    <Tabs>
+        <tab-pane v-for="(fenlei,key,index) in jsonData.sections"
+                 :key="key"
+                 :label="(index+1)+'、'+fenlei.name"
+                 icon="ios-pricetags">
+            <function-form
+                    :json-data="jsonData"
+                    :fenlei-children="fenlei.children"
+                    :fenlei-key="key"
+                    :fenlei-index="index"
+                    :sections-children="sectionsChildren" hildren>
+            </function-form>
+
+        </tab-pane>
+    </Tabs>
+</div>
+
+
+<script>
+    let searchFunNameJsonData = $.parseJSON(nav);
+    let searchDesJsonData = $.parseJSON(search_name_json);
+
+    // require('./renderer.js');
+    new Vue({
+        el: '#app',
+        data: {
+            jsonData: searchFunNameJsonData,
+            sectionsChildren: [],//全局搜索结果集合
+            keyword: '',// 全局搜索关键词
+            // 下拉项目库信息对象集合
+            projectInfos: [
+                {
+                    title: 'Gitee库地址(最新版)',
+                    url: 'https://gitee.com/TangHanF/excel_function_manual_webpack'
+                },
+                {
+                    title: 'GitHub库地址（最新版）',
+                    url: 'https://github.com/TangHanF/excel_function_manual_webpack'
+                },
+                {
+                    title: 'Gitee库地址(第一版)',
+                    url: 'https://gitee.com/TangHanF/excel_function_manual'
+                },
+                {
+                    title: 'GitHub库地址（第一版）',
+                    url: 'https://github.com/TangHanF/excel_function_manual'
+                },
+            ],
+        },
+        methods: {
+            clearSearch:function () {
+                this.sectionsChildren = [];
+                // Vue.set(this.sectionsChildren, index, searchFunNameJsonData.topics[key]);
+                this.keyword = '';
+            }
+        },
+        watch: {
+            // 对搜索框输入的内容进行实时搜索
+            keyword: function (newKeyword) {
+
+                //清空搜索框时直接return回去
+                if ($.trim(newKeyword) === '')
+                    return;
+
+                //匹配函数名搜索
+                let tmpObj = [];
+                let index = 0;
+                let that = this;
+                that.sectionsChildren = [];
+
+                $.each(searchFunNameJsonData.topics, function (key, obj) {
+                    if (obj.name.toLowerCase().indexOf(newKeyword) != -1) {
+                        tmpObj.push(obj);
+                        Vue.set(that.sectionsChildren, index, obj);
+                        index++;
+                    }
+                });
+
+                //匹配描述搜索
+                let searchDesObj = searchDesJsonData[newKeyword];
+                if (searchDesObj) {
+                    index = 0;
+                    $.each(searchDesObj, function (key, val) {
+                        tmpObj.push(searchFunNameJsonData.topics[key]);
+                        Vue.set(that.sectionsChildren, index, searchFunNameJsonData.topics[key]);
+                        index++;
+                    })
+                }
+                // console.log("结果数：" + that.sectionsChildren.length)
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

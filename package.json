@@ -1,0 +1,20 @@
+{
+  "name": "Excel-Function-Manual",
+  "version": "1.0.0",
+  "description": "Excel快速查询手册（For Mac）",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "buildexe":"electron-packager ./ --platform=win32 --arch=x64 --overwrite",
+    "buildmas":"electron-packager ./ --platform=mas --arch=x64 --overwrite"
+  },
+
+  "author": "TangHanF",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^3.0.4"
+  },
+  "dependencies": {
+    "asar": "^0.14.5"
+  }
+}
